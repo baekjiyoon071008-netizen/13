@@ -5,31 +5,30 @@
 struct Book
 {
     int number;
-    char title[20];
+    char title[10];
 };
 
 int main(void)
 {
-    struct Book *p;
+    int i;
+    struct Book **bookshelf;
 
-    p = (struct Book *)malloc(sizeof(struct Book) * 2);
+    bookshelf = (struct Book **)malloc(sizeof(struct Book *) * 3);
+    for (i=0;i<3;i++)
+      bookshelf[i] = (struct Book *)malloc(sizeof(struct Book) * 10);
 
-    if (p == NULL)
-    {
-        printf("Memory allocation failed\n");
-        return -1;
-    }
+    bookshelf[1][3].number = 5;
+    strcpy(bookshelf[1][3].title, "C++ Programming");
 
-    p->number = 1;
-    strcpy(p->title, "C Programming");
+    (bookshelf[2]+4)->number = 3;
+    strcpy((bookshelf[2]+4)->title, "Communications");
 
-    (p+1)->number = 2;
-    strcpy((p+1)->title, "Electronics");
+    printf("book (1,3) :%i, %s\n", (bookshelf[1]+3)->number, (bookshelf[1]+3)->title);
+    printf("book (2,4) :%i, %s\n", bookshelf[2][4].number, bookshelf[2][4].title);
 
-    printf("%i : %s\n", p->number, p->title);
-    printf("%i : %s\n", (p+1)->number, (p+1)->title);
-
-    free(p);
+    for (i=0;i<3;i++)
+      free(bookshelf[i]);
+    free(bookshelf);
 
     return 0;
 }
